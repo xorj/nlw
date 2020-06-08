@@ -69,13 +69,11 @@ class PointsController {
   //Filta os points usando alguns parametros
   async index(req: Request, res: Response) {
     const { city, uf, items } = req.query;
-    console.log(city, uf, items);
-
     const parsedItems = String(items)
       .split(",")
       .map((item) => Number(item.trim()));
     const points = await knex("points")
-      .join("points_items", "point_id", "=", "points_items.point_id")
+      .join("points_items", "points.id", "=", "points_items.point_id")
       .whereIn("points_items.item_id", parsedItems)
       .where("city", String(city))
       .where("uf", String(uf))
